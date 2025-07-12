@@ -5,7 +5,7 @@
 
 # ✈ JetSetGo – Your Ultimate Travel Partner 🌍
 
-*JetSetGo* is a modern, all-in-one travel booking website that helps you plan, book, and experience your dream vacation with ease. Whether you're planning a summer in Europe, a relaxing escape to Bali or Maldives, a business trip, or a last-minute solo adventure — JetSetGo has everything you need.
+JetSetGo is a modern, all-in-one travel booking website that helps you plan, book, and experience your dream vacation with ease. Whether you're planning a summer in Europe, a relaxing escape to Bali or Maldives, a business trip, or a last-minute solo adventure — JetSetGo has everything you need.
 
 ---
 
@@ -15,13 +15,12 @@
 - Handpicked destinations for every traveler.
 - Customizable packages for:
   - Family Vacations 👨‍👩‍👧‍👦
-  - Honeymoons 💑
   - Solo Adventures 🧍‍♂
   - Group Tours 👥
 
 ### ✈ Flight & 🏨 Hotel Booking
 - Compare and book flights and hotels in one place.
-- Top destinations: *Bali, **Maldives, **Thailand, **Europe*, etc.
+- Top destinations: Bali, Maldives, Thailand, Europe, etc.
 - Easy search with filters for price, rating, and amenities.
 
 ### 🎁 Special Offers & Deals
