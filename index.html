@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kashis JetSetGo <Textarea:rows></Textarea:rows>ravel booking  | Travel Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .hero {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .search-card {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .destination-card:hover {
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .tab-active {
+            border-bottom: 3px solid #3b82f6;
+            color: #3b82f6;
+        }
+        
+        .hotel-card:hover img {
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <i class="fas fa-plane-departure text-blue-500 text-3xl mr-2"></i>
+                <h1 class="text-2xl font-bold text-blue-600">JetSetGo</h1>
+            </div>
+            
+            <nav class="hidden md:flex space-x-8">
+                <a href="#" class="text-blue-600 font-medium">Flights</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600">Hotels</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600">Packages</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600">Activities</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600">Deals</a>
+            </nav>
+            
+            <div class="flex items-center space-x-4">
+                <button class="hidden md:block text-gray-600 hover:text-blue-600">
+                    <i class="fas fa-user-circle text-xl"></i>
+                </button>
+                <button class="md:hidden text-gray-600">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <button id="loginBtn" class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition">Login</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section with Search -->
+    <section class="hero text-white py-16 md:py-24">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Explore the World</h2>
+                <p class="text-xl opacity-90">Find and book your perfect trip with exclusive deals</p>
+            </div>
+            
+            <!-- Search Tabs -->
+            <div class="max-w-4xl mx-auto">
+                <div class="flex justify-center mb-6">
+                    <button onclick="changeTab('flights')" id="flights-tab" class="tab-active px-6 py-3 font-medium">Flights</button>
+                    <button onclick="changeTab('hotels')" id="hotels-tab" class="px-6 py-3 font-medium text-gray-300">Hotels</button>
+                    <button onclick="changeTab('packages')" id="packages-tab" class="px-6 py-3 font-medium text-gray-300">Packages</button>
+                </div>
+                
+                <!-- Flight Search Form (Default Visible) -->
+                <div id="flights-search" class="search-card rounded-xl p-6">
+                    <form>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                            <div class="col-span-1 md:col-span-1 lg:col-span-2">
+                                <label class="block text-sm font-medium mb-1">From</label>
+                                <div class="relative">
+                                    <input type="text" placeholder="City or Airport" class="w-full bg-white bg-opacity-20 border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300">
+                                    <span class="absolute right-4 top-3.5 text-gray-300">
+                                        <i class="fas fa-exchange-alt rotate-90"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-span-1 md:col-span-1">
+                                <label class="block text-sm font-medium mb-1">To</label>
+                                <input type="text" placeholder="City or Airport" class="w-full bg-white bg-opacity-20 border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300">
+                            </div>
+                            
+                            <div class="col-span-1">
+                                <label class="block text-sm font-medium mb-1">Depart</label>
+                                <input type="date" class="w-full bg-white bg-opacity-20 border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300">
+                            </div>
+                            
+                            <div class="col-span-1">
+                                <label class="block text-sm font-medium mb-1">Return</label>
+                                <input type="date" class="w-full bg-white bg-opacity-20 border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300">
+                            </div>
+                        </div>
+                        
+                      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Travelers</label>
+                                <select class="w-full bg-white bg-opacity-20 border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option>1 Traveler</option>
+                                    <option>2 Travelers</option>
+                                    <option>3 Travelers</option>
+                                    <option>4 Travelers</option>
+                                    <option>Family (5+)</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Class</label>
+                                <select class="w-full bg-white bg-opacity-20 border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option>Economy</option>
+                                    <option>Premium Economy</option>
+                                    <option>Business</option>
+                                    <option>First Class</option>
+                                </select>
+                            </div>
+                            
+                            <div class="self-end">
+                                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-medium transition duration-300">
+                                    Search Flights
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                            
+                            
+                         
+                
+                <!-- Hotel Search Form (Hidden by Default) -->
+                <div id="hotels-search" class="hidden search-card rounded-xl p-6">
+                    <form>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                            <div class="col-span-1 md:col-span-2 lg:col-span-2">
+                                <label class="block text-sm font-medium mb-1">Destination</label>
+                                <input type="text" placeholder="City, Hotel or Area" class="w-full bg-white bg-opacity-20 border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300">
+                            </div>
+                            
+                            <div class="col-span-1">
+                                <label class="block text-sm font-medium mb-1">Check-In</label>
+                                <input type="date" class="w-full bg-white bg-opacity-20 border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300">
+                            </div>
+                            
+                            <div class="col-span-1">
+                                <label class="block text-sm font-medium mb-1">Check-Out</label>
+                                <input type="date" class="w-full bg-white bg-opacity-20 border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300">
+                            </div>
+                            
+                            <div class="col-span-1">
+                                <label class="block text-sm font-medium mb-1">Guests</label>
+                                <select class="w-full bg-white bg-opacity-20 border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300">
+                                    <option>1 Room, 2 Adults</option>
+                                    <option>1 Room, 1 Adult</option>
+                                    <option>2 Rooms, 4 Adults</option>
+                                    <option>Family Suite</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 text-right">
+                            <button type="submit" class="inline-block bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-medium transition duration-300">
+                                Search Hotels
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Packages Search Form (Hidden by Default) -->
+                <div id="packages-search" class="hidden search-card rounded-xl p-6">
+                    <form>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="col-span-1 md:col-span-1 lg:col-span-2">
+                                <label class="block text-sm font-medium mb-1">Destination</label>
+                                <input type="text" placeholder="City or Country" class="w-full bg-white bg-opacity-20 border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300">
+                            </div>
+                            
+                            <div class="col-span-1">
+                                <label class="block text-sm font-medium mb-1">Departure</label>
+                                <input type="date" class="w-full bg-white bg-opacity-20 border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300">
+                            </div>
+                            
+                            <div class="col-span-1">
+                                <label class="block text-sm font-medium mb-1">Duration</label>
+                                <select class="w-full bg-white bg-opacity-20 border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300">
+                                    <option>7-10 Days</option>
+                                    <option>10-14 Days</option>
+                                    <option>2 Weeks+</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Travelers</label>
+                                <select class="w-full bg-white bg-opacity-20 border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-300">
+                                    <option>1 Traveler</option>
+                                    <option>2 Travelers</option>
+                                    <option>Family Package</option>
+                                </select>
+                            </div>
+                            
+                            <div class="self-end">
+                                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-medium transition duration-300">
+                                    Find Packages
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Destinations -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Popular Destinations</h2>
+                <p class="text-gray-600">Most searched destinations this season</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="destination-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3" alt="Bali" class="w-full h-64 object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <h3 class="text-white text-xl font-semibold">Bali, Indonesia</h3>
+                            <p class="text-gray-200">Starting from 50,000</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="destination-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1496568816309-51d7c20e3b21?ixlib=rb-4.0.3" alt="Paris" class="w-full h-64 object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <h3 class="text-white text-xl font-semibold">Paris, France</h3>
+                            <p class="text-gray-200">Starting from 80,000</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="destination-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1503917988258-f87a78e3c995?ixlib=rb-4.0.3" alt="Tokyo" class="w-full h-64 object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <h3 class="text-white text-xl font-semibold">Tokyo, Japan</h3>
+                            <p class="text-gray-200">Starting from 1 lakh</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="destination-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1533107862482-0e6974b06ec4?ixlib=rb-4.0.3" alt="New York" class="w-full h-64 object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <h3 class="text-white text-xl font-semibold">New York, USA</h3>
+                            <p class="text-gray-200">Starting from 2 lakh</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button class="px-6 py-3 bg-transparent border-2 border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-600 hover:text-white transition duration-300">
+                    View All Destinations
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Offers -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Special Offers</h2>
+                    <p class="text-gray-600">Limited time deals for your next adventure</p>
+                </div>
+                <div>
+                    <button class="px-6 py-2 bg-transparent border border-gray-300 text-gray-600 rounded-lg font-medium hover:bg-blue-600 hover:text-white hover:border-blue-600 transition duration-300">
+                        View All Deals
+                    </button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- First Offer Card (Featured) -->
+                <div class="lg:col-span-2 relative rounded-xl overflow-hidden shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-4.0.3" alt="Special Offer" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent flex items-center p-8 md:p-12">
+                        <div class="max-w-md">
+                            <div class="mb-2">
+                                <span class="bg-orange-500 text-white text-xs font-bold px-2.5 py-0.5 rounded">LIMITED TIME</span>
+                            </div>
+                            <h3 class="text-3xl font-bold text-white mb-2">Summer in Europe</h3>
+                            <p class="text-gray-300 mb-4">Save up to 30% on flights and hotels across Europe for summer bookings.</p>
+                            <div class="flex items-center mb-4">
+                                <p class="text-xl font-bold text-orange-400 mr-3">80,000</p>
+                                <p class="text-gray-300 line-through">1 lakh</p>
+                            </div>
+                            <button class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition duration-300">
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Second Offer Card -->
+                <div class="relative rounded-xl overflow-hidden shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-4.0.3" alt="Special Offer" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex flex-col justify-end p-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-1">Solo Traveler Special</h3>
+                            <p class="text-gray-300 text-sm mb-3">Exclusive 20% off for single travelers on select destinations</p>
+                            <button class="px-4 py-1.5 bg-transparent border border-white text-white text-sm rounded-lg hover:bg-white hover:text-black transition duration-300">
+                                Explore Solo Deals
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Third Offer Card -->
+                <div class="relative rounded-xl overflow-hidden shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1518391846015-55a9cc003b25?ixlib=rb-4.0.3" alt="Special Offer" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex flex-col justify-end p-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-1">Family Vacation Deals</h3>
+                            <p class="text-gray-300 text-sm mb-3">Kids stay & eat free at partnered hotels</p>
+                            <button class="px-4 py-1.5 bg-transparent border border-white text-white text-sm rounded-lg hover:bg-white hover:text-black transition duration-300">
+                                Discover More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fourth Offer Card -->
+                <div class="relative rounded-xl overflow-hidden shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1518684079-3c830dcef090?ixlib=rb-4.0.3" alt="Special Offer" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex flex-col justify-end p-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-1">Last Minute Deals</h3>
+                            <p class="text-gray-300 text-sm mb-3">Up to 50% off on unsold inventory</p>
+                            <button class="px-4 py-1.5 bg-transparent border border-white text-white text-sm rounded-lg hover:bg-white hover:text-black transition duration-300">
+                                Discover More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Hotels -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Featured Hotels</h2>
+                <p class="text-gray-600">Handpicked selection of luxury accommodations</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Hotel 1 -->
+                <div class="hotel-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
+                    <div class="overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3" alt="The Ritz" class="w-full h-full object-cover transition duration-300">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-gray-800">The Ritz London</h3>
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <span class="ml-1 text-gray-800 font-medium">4.9</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4 flex items-center">
+                            <i class="fas fa-map-marker-alt text-blue-500 mr-2"></i>
+                            London, UK
+                        </p>
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <span class="text-gray-500 line-through">40,000</span>
+                                <span class="text-2xl font-bold text-blue-600 ml-2">30,750</span>
+                                <span class="text-sm text-gray-500">/night</span>
+                            </div>
+                            <span class="text-sm bg-green-100 text-green-800 px-2 py-1 rounded">20% OFF</span>
+                        </div>
+                        <button class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition duration-300">
+                            View Deal
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Hotel 2 -->
+                <div class="hotel-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
+                    <div class="overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3" alt="Burj Al Arab" class="w-full h-full object-cover transition duration-300">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-gray-800">Burj Al Arab</h3>
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <span class="ml-1 text-gray-800 font-medium">4.8</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4 flex items-center">
+                            <i class="fas fa-map-marker-alt text-blue-500 mr-2"></i>
+                            Dubai, UAE
+                        </p>
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">80,000</span>
+                                <span class="text-sm text-gray-500">/night</span>
+                            </div>
+                            <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded">LUXURY</span>
+                        </div>
+                        <button class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition duration-300">
+                            View Deal
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Hotel 3 -->
+                <div class="hotel-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
+                    <div class="overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1455587734955-081b22074882?ixlib=rb-4.0.3" alt="Four Seasons" class="w-full h-full object-cover transition duration-300">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-gray-800">Four Seasons Bali</h3>
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <span class="ml-1 text-gray-800 font-medium">4.9</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4 flex items-center">
+                            <i class="fas fa-map-marker-alt text-blue-500 mr-2"></i>
+                            Jimbaran, Bali
+                        </p>
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <span class="text-gray-500 line-through">70,000</span>
+                                <span class="text-2xl font-bold text-blue-600 ml-2">45,000</span>
+                                <span class="text-sm text-gray-500">/night</span>
+                            </div>
+                            <span class="text-sm bg-orange-100 text-orange-800 px-2 py-1 rounded">25% OFF</span>
+                        </div>
+                        <button class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition duration-300">
+                            View Deal
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Why Choose JetSetGo</h2>
+                <p class="text-gray-600">We make travel simple and rewarding</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-award text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Best Price Guarantee</h3>
+                    <p class="text-gray-600">We'll match or beat any competitor's price for the same itinerary.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-headset text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">24/7 Customer Support</h3>
+                    <p class="text-gray-600">Our travel experts are available around the clock to assist you.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-alt text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Flexible Booking</h3>
+                    <p class="text-gray-600">Change or cancel most bookings with no fees up to 24 hours before.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-percentage text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Exclusive Deals</h3>
+                    <p class="text-gray-600">Access to special discounts and perks not available elsewhere.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Traveler Stories</h2>
+                <p class="text-gray-600">What our customers say about us</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Drashti" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Drashti</h4>
+                            <div class="flex">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        "JetSetGo made my trip to Goa so easy! As an Indian traveler, I found the best prices for flights and hotels, and their support team helped me reschedule my return without any hassle. Highly recommended for anyone planning a vacation!"
+                    </p>
+                    <p class="text-sm text-gray-500">April 15, 2025</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Jinesh" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Jinesh Makwana</h4>
+                            <div class="flex">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        "I've booked multiple trips with JetSetGo and they never disappoint. Their price matching guarantee saved me over 20,000on flights to Tokyo. The hotel recommendations are always spot-on too!"
+                    </p>
+                    <p class="text-sm text-gray-500">February 28, 2025</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Tanishka" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Tanishka</h4>
+                            <div class="flex">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        "The family package we booked to Orlando was perfect. Everything from flights to hotel to park tickets was included at a great price. My kids had the time of their lives!"
+                    </p>
+                    <p class="text-sm text-gray-500">January 5, 2025</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-16 bg-blue-600 text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-4">Get Travel Deals & Inspiration</h2>
+                <p class="text-blue-100 mb-8">Subscribe to our newsletter for exclusive offers, travel tips, and destination inspiration delivered straight to your inbox.</p>
+                
+                <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+                    <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 text-gray-800">
+                    <button type="submit" class="px-6 py-3 bg-orange-500 hover:bg-orange-600 rounded-lg font-medium transition duration-300">
+                        Subscribe
+                    </button>
+                </form>
+                
+                <p class="text-blue-100 text-xs mt-4">We respect your privacy. Unsubscribe at any time.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-plane-departure text-blue-400 text-2xl mr-2"></i>
+                        <h3 class="text-xl font-bold">JetSetGo</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Making travel dreams a reality since 2010. We're committed to providing exceptional service and unbeatable value.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-blue-400"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Explore</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Destinations</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Flights</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Hotels</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Vacation Packages</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Activities & Tours</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Car Rentals</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Press Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Travel Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">FAQs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Booking Conditions</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Cookie Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 JetSetGo Travel. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <img src="https://via.placeholder.com/40x25" alt="PAYtm" class="h-6 opacity-70">
+                    <img src="https://via.placeholder.com/40x25" alt="Phonepe" class="h-6 opacity-70">
+                    <img src="https://via.placeholder.com/40x25" alt="Google Pay" class="h-6 opacity-70">
+                    <img src="https://via.placeholder.com/40x25" alt="Visa" class="h-6 opacity-70">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-8 relative">
+            <button id="closeLoginModal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
+            <h2 class="text-2xl font-bold mb-6 text-center text-blue-600">Login</h2>
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-gray-700">Name</label>
+                    <input type="text" name="name" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Your Name">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-gray-700">Email</label>
+                    <input type="email" name="email" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="you@email.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-gray-700">Phone Number</label>
+                    <input type="tel" name="phone" required pattern="[0-9]{10,15}" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Phone Number">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        function changeTab(tabName) {
+            // Hide all search forms
+            document.getElementById('flights-search').classList.add('hidden');
+            document.getElementById('hotels-search').classList.add('hidden');
+            document.getElementById('packages-search').classList.add('hidden');
+            
+            // Remove active class from all tabs
+            document.getElementById('flights-tab').classList.remove('tab-active');
+            document.getElementById('hotels-tab').classList.remove('tab-active');
+            document.getElementById('packages-tab').classList.remove('tab-active');
+            
+            // Add active class to clicked tab
+            document.getElementById(`${tabName}-tab`).classList.add('tab-active');
+            
+            // Show the selected search form
+            document.getElementById(`${tabName}-search`).classList.remove('hidden');
+            
+            // Change text color for active/inactive tabs
+            if(tabName === 'flights') {
+                document.getElementById('flights-tab').classList.remove('text-gray-300');
+                document.getElementById('hotels-tab').classList.add('text-gray-300');
+                document.getElementById('packages-tab').classList.add('text-gray-300');
+            } else if(tabName === 'hotels') {
+                document.getElementById('flights-tab').classList.add('text-gray-300');
+                document.getElementById('hotels-tab').classList.remove('text-gray-300');
+                document.getElementById('packages-tab').classList.add('text-gray-300');
+            } else {
+                document.getElementById('flights-tab').classList.add('text-gray-300');
+                document.getElementById('hotels-tab').classList.add('text-gray-300');
+                document.getElementById('packages-tab').classList.remove('text-gray-300');
+            }
+        }
+        
+        // Date pickers - set min date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.querySelectorAll('input[type="date"]').forEach(input => {
+            input.min = today;
+        });
+        
+        // Set default return date to 7 days from today
+        const nextWeek = new Date();
+        nextWeek.setDate(nextWeek.getDate() + 7);
+        const nextWeekFormatted = nextWeek.toISOString().split('T')[0];
+        const returnInputs = document.querySelectorAll('input[type="date"]:nth-of-type(2)');
+        returnInputs.forEach(input => {
+            if(input.id !== 'depart-hotel' && input.id !== 'depart-package') {
+                input.value = nextWeekFormatted;
+            }
+        });
+        
+        // Mobile menu toggle (would need more implementation)
+        document.querySelector('.fa-bars').addEventListener('click', function() {
+            alert('Mobile menu would open here in a full implementation');
+        });
+
+        // Login Modal logic
+        const loginBtn = document.getElementById('loginBtn');
+        const loginModal = document.getElementById('loginModal');
+        const closeLoginModal = document.getElementById('closeLoginModal');
+        loginBtn.addEventListener('click', () => {
+            loginModal.classList.remove('hidden');
+        });
+        closeLoginModal.addEventListener('click', () => {
+            loginModal.classList.add('hidden');
+        });
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.classList.add('hidden');
+            }
+        });
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // You can add your login logic here
+            alert('Logged in as ' + this.name.value + ' (' + this.email.value + ', ' + this.phone.value + ')');
+            loginModal.classList.add('hidden');
+        });
+    </script>
+
+</html> 
